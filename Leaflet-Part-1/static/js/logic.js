@@ -3,9 +3,9 @@ const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.
 
 function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" +
-        "<hr> <p> Earthquake Magnitude: " + feature.properties.mag + "</p>")
-}
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" +
+      "<hr> <p> Earthquake Magnitude: " + feature.properties.mag + "</p>")
+  }
 
 // Use D3 library to fetch data
 d3.json(url).then(function (data) {
@@ -25,10 +25,14 @@ d3.json(url).then(function (data) {
     var earthquakes = L.geoJSON(data.features, {
         pointToLayer: function (feature, coordinates) {
             // console.log(feature)
-            console.log(coordinates);
-            return L.circle(coordinates);
-        }
-    })
+            // console.log(coordinates);
+            // Determine Marker Colors, Size, and Opacity for each earthquake.
+            var geoMarkers = {
+              radius: feature.properties.mag*30000,
+            }
+            return L.circle(coordinates, geoMarkers);
+          }
+        })
 
     //Create base Leaflet map
     let myMap = L.map("map", {
