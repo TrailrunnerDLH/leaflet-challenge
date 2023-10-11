@@ -1,6 +1,25 @@
 // Store json url in variable
 const url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
 
+function depthColor(depth){
+    if(depth < 10){
+        return "#FFFF01";
+    }
+    else if(depth < 20){
+        return "#FFC000";
+    }
+    else if(depth < 30){
+        return "#E76200";
+    }
+    else if(depth < 40){
+        return "#FE0000";
+    }
+    else {
+        return "#C00F17";
+    } 
+}
+
+
 
 // Use D3 library to fetch data
 d3.json(url).then(function (data) {
@@ -23,6 +42,7 @@ d3.json(url).then(function (data) {
             // console.log(coordinates);
             // Determine Marker Colors, Size, and Opacity for each earthquake.
             var geoMarkers = {
+              fillColor: depthColor(coordinates.alt),  
               radius: feature.properties.mag*30000,
             }
             return L.circle(coordinates, geoMarkers);
